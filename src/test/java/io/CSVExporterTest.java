@@ -1,22 +1,32 @@
 package io;
 
+import metrics.PerformanceTracker;
 import org.junit.jupiter.api.Test;
-
+import io.CSVExporter;
 import java.io.File;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CSVExporterTest {
 
     @Test
-    public void testCSVExport() {
-        String path = "test_results.csv";
-        CSVExporter exporter = new CSVExporter(path);
-        exporter.writeHeader();
-        exporter.appendRow("SelectionSort", 5, 10, 3, 15, 0.512);
+    public void testExportPerformance() throws IOException {
+        PerformanceTracker tracker = new PerformanceTracker();
+        tracker.start();
+        tracker.incrementComparisons();
+        tracker.incrementSwaps();
+        tracker.incrementArrayAccesses();
+        tracker.stop();
 
-        File file = new File(path);
+        String filePath = "test_metrics.csv";
+        CSVExporter.exportPerformance("SelectionSort", tracker, filePath);
+
+        File file = new File(filePath);
         assertTrue(file.exists());
-        file.delete();
+        assertTrue(file.length() > 0);
+
+        // Удаляем файл после теста
+        assertTrue(file.delete());
     }
 }
