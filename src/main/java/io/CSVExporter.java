@@ -1,30 +1,30 @@
 package io;
 
+import metrics.PerformanceTracker;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class CSVExporter {
 
-    private final String filePath;
-
-    public CSVExporter(String filePath) {
-        this.filePath = filePath;
-    }
-
-    public void writeHeader() {
-        try (FileWriter writer = new FileWriter(filePath, false)) {
-            writer.write("Algorithm,Array Size,Comparisons,Swaps,Array Accesses,Execution Time (ms)\n");
-        } catch (IOException e) {
-            System.err.println("Error writing header: " + e.getMessage());
-        }
-    }
-
-    public void appendRow(String algorithm, int arraySize, long comparisons, long swaps, long arrayAccesses, double timeMs) {
+    public static void exportPerformance(String algorithmName, PerformanceTracker tracker, String filePath) {
         try (FileWriter writer = new FileWriter(filePath, true)) {
-            writer.write(String.format("%s,%d,%d,%d,%d,%.3f\n",
-                    algorithm, arraySize, comparisons, swaps, arrayAccesses, timeMs));
+
+            if (writer.getEncoding() != null) {
+                writer.write("Algorithm,Comparisons,Swaps,ArrayAccesses,ExecutionTime(ms)\n");
+            }
+
+            double execTimeMs = tracker.getExecutionTime() / 1_000_000.0;
+
+            writer.write(String.format(
+                    "%s,%d,%d,%d,%.3f\n",
+                    algorithmName,
+                    tracker.getComparisons(),
+                    tracker.getSwaps(),
+                    tracker.getArrayAccesses(),
+                    execTimeMs
+            ));
         } catch (IOException e) {
-            System.err.println("Error writing row: " + e.getMessage());
+            System.err.println("Ошибка при записи CSV: " + e.getMessage());
         }
     }
 }
