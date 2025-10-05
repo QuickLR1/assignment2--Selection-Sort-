@@ -10,26 +10,38 @@ public class SelectionSort {
     }
 
     public void sort(int[] arr) {
-        if (arr == null || arr.length <= 1) return;
+        tracker.reset();
+
+        if (arr == null || arr.length == 0) {
+            tracker.start();
+            tracker.stop();
+            return;
+        }
+
+        if (arr.length == 1) {
+            tracker.start();
+            tracker.incrementArrayAccesses();
+            tracker.stop();
+            return;
+        }
 
         tracker.start();
         int n = arr.length;
 
         for (int i = 0; i < n - 1; i++) {
             int minIndex = i;
-            boolean alreadySorted = true;
+            boolean sorted = true;
 
             for (int j = i + 1; j < n; j++) {
                 tracker.incrementComparisons();
                 tracker.incrementArrayAccesses();
                 if (arr[j] < arr[minIndex]) {
                     minIndex = j;
-                    alreadySorted = false;
+                    sorted = false;
                 }
             }
 
-
-            if (alreadySorted) break;
+            if (sorted) break;
 
             if (minIndex != i) {
                 swap(arr, i, minIndex);
