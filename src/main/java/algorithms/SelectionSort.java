@@ -13,25 +13,23 @@ public class SelectionSort {
         if (arr == null || arr.length <= 1) return;
 
         tracker.start();
-
-        boolean sorted;
         int n = arr.length;
 
         for (int i = 0; i < n - 1; i++) {
             int minIndex = i;
-            sorted = true;
+            boolean alreadySorted = true;
 
             for (int j = i + 1; j < n; j++) {
                 tracker.incrementComparisons();
                 tracker.incrementArrayAccesses();
                 if (arr[j] < arr[minIndex]) {
                     minIndex = j;
-                    sorted = false;
+                    alreadySorted = false;
                 }
             }
 
 
-            if (sorted) break;
+            if (alreadySorted) break;
 
             if (minIndex != i) {
                 swap(arr, i, minIndex);
