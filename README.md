@@ -16,11 +16,9 @@ The implementation includes:
 mvn clean compile
 🧪 2. Run Tests
 bash
-Копировать код
 mvn test
 ⚙️ 3. Run Benchmark CLI
 bash
-Копировать код
 mvn exec:java -Dexec.mainClass="cli.BenchmarkRunner"
 The program will:
 
@@ -47,7 +45,6 @@ The algorithm is in-place and does not require additional memory beyond a few va
 
 🧩 Project Structure
 bash
-Копировать код
 assignment2--Selection-Sort-/
 │
 ├── src/
